@@ -5,15 +5,7 @@ import {Textarea} from "~/components/ui/textarea";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "~/components/ui/table"
 import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "~/components/ui/pagination"
+import {useRef} from "react";
 
 
 export default function Home() {
@@ -49,6 +41,8 @@ export default function Home() {
         },
     ]
 
+    const textareaRef = useRef(null);
+
     return (
         <>
             <Head>
@@ -60,21 +54,28 @@ export default function Home() {
                 <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-center mt-2">
                     留言板
                 </h4>
+                <div className="flex justify-end">
+                    <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                </div>
                 <div className="mt-2">
-                    <Card className="">
+                    <Card>
                         <CardHeader>
                             <CardTitle>新留言</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="grid gap-4 mt-2">
-                                <Textarea className="w-full" placeholder="留言" />
+                                <Textarea className="w-full" ref={textareaRef} placeholder="留言" />
                                 <Button>Send message</Button>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
+
                 <div className="mt-2">
-                    <Card className="">
+                    <Card>
                         <CardHeader>
                             <CardTitle>历史留言</CardTitle>
                         </CardHeader>
@@ -98,25 +99,6 @@ export default function Home() {
                                     ))}
                                 </TableBody>
                             </Table>
-                            <Pagination>
-                                <PaginationContent>
-                                    <PaginationItem>
-                                        <PaginationPrevious href="#" />
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <PaginationLink href="#">1</PaginationLink>
-                                        <PaginationLink href="#">2</PaginationLink>
-                                        <PaginationLink href="#">3</PaginationLink>
-                                        <PaginationLink href="#">4</PaginationLink>
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <PaginationNext href="#" />
-                                    </PaginationItem>
-                                </PaginationContent>
-                            </Pagination>
                         </CardContent>
                     </Card>
                 </div>
