@@ -1,8 +1,6 @@
 import Head from "next/head";
 
 import { api } from "~/utils/api";
-import {useMutation} from "@tanstack/react-query";
-import {router} from "next/client";
 
 export default function Home() {
 
@@ -32,8 +30,7 @@ export default function Home() {
           <form onSubmit={(e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-            // @ts-ignore
-            mutate({ name: formData.get('name') });
+            mutate({ name : formData.get('name') as string });
           }}>
             <input name="name" />
             <button>提交</button>
