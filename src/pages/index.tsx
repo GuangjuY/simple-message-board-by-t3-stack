@@ -102,9 +102,6 @@ export default function Home() {
                         </CardContent>
                     </Card>
                 </div>
-                <div>
-                    <p>Bhutan used to be one of the most isolated nations in the world. Developments including direct international flights, the Internet, mobile phone networks, and cable television have increasingly modernised the urban areas of the country. Bhutan has balanced modernization with its ancient culture and traditions under the guiding philosophy of Gross National Happiness"GNH". Rampant destruction of the environment has been avoided. The government takes great measures to preserve the nation's traditional culture, identity and the environment. In 2006, Business Week magazine rated Bhutan the happiest country in Asia and the eighth- happiest in the world, citing a global survey conducted by the University of Leicester in 2006 called the"World Map of Happiness".</p>
-                </div>
             </main>
         </>
     );
