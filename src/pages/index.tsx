@@ -5,7 +5,6 @@ import {Textarea} from "~/components/ui/textarea";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "~/components/ui/table"
 import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
-import {useRef} from "react";
 
 
 export default function Home() {
@@ -41,7 +40,6 @@ export default function Home() {
         },
     ]
 
-    const textareaRef = useRef(null);
 
     return (
         <>
@@ -67,7 +65,7 @@ export default function Home() {
                         </CardHeader>
                         <CardContent>
                             <div className="grid gap-4 mt-2">
-                                <Textarea className="w-full" ref={textareaRef} placeholder="留言" />
+                                <Textarea className="w-full" placeholder="留言" />
                                 <Button>Send message</Button>
                             </div>
                         </CardContent>
@@ -88,12 +86,14 @@ export default function Home() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {invoices.map((invoice) => (
+                                    {invoices?.map((invoice) => (
                                         <TableRow key={invoice.invoice}>
-                                            <Avatar>
-                                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                                <AvatarFallback>CN</AvatarFallback>
-                                            </Avatar>
+                                            <TableCell>
+                                                <Avatar>
+                                                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                    <AvatarFallback>CN</AvatarFallback>
+                                                </Avatar>
+                                            </TableCell>
                                             <TableCell>{invoice.content}</TableCell>
                                         </TableRow>
                                     ))}

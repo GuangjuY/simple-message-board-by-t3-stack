@@ -2,13 +2,32 @@ import Head from "next/head";
 
 import {Button} from "~/components/ui/button"
 import {Textarea} from "~/components/ui/textarea";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "~/components/ui/table"
 import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
-import {useRef} from "react";
+import {api} from "~/utils/api";
+import { Input } from "~/components/ui/input"
+import {Label} from "@radix-ui/react-label";
+import {useState} from "react";
 
 
 export default function Home() {
+
+    const questions = api.pteQuestion.list.useQuery();
+
+    const [questionNo,setQuestionNo] = useState("")
+    const [title,setTitle] = useState("")
+    const [type,setType] = useState("")
+    const [content,setContent] = useState("")
+
+
+
+
+    const {mutate} = api.pteQuestion.create.useMutation({
+        onSettled: async () => {
+            await questions.refetch().then().catch();
+        }
+    });
+
 
     return (
         <>
@@ -19,7 +38,7 @@ export default function Home() {
             </Head>
             <main className="flex flex-col justify-center w-1/2 mx-auto">
                 <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-center mt-2">
-                    学习资料
+                    PTE Question
                 </h4>
                 <div className="flex justify-end">
                     <Avatar>
@@ -27,30 +46,57 @@ export default function Home() {
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </div>
+
                 <div className="mt-2">
                     <Card>
                         <CardHeader>
-                            <CardTitle> World Map of Happiness </CardTitle>
+                            <CardTitle>Create Question</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="leading-7 [&:not(:first-child)]:mt-6">
-                                Bhutan used to be one of the most isolated nations in the world. Developments including direct international flights, the Internet, mobile phone networks, and cable television have increasingly modernised the urban areas of the country. Bhutan has balanced modernization with its ancient culture and traditions under the guiding philosophy of Gross National Happiness&quot;GNH&quot;. Rampant destruction of the environment has been avoided. The government takes great measures to preserve the nation&apos;s traditional culture, identity and the environment. In 2006, Business Week magazine rated Bhutan the happiest country in Asia and the eighth- happiest in the world, citing a global survey conducted by the University of Leicester in 2006 called the&quot;World Map of Happiness&quot;.
-                            </p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>  How world works  </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="leading-7 [&:not(:first-child)]:mt-6">
-                                Throughout the 18 th century, mathematicians, scientists and philosophers researched, discussed, and published their investigations into how the world worked, while engineers and inventors developed new and successful machines and processes. The latest theories inspired greater invention, and more technology encouraged theoretical scientists to make further discoveries in medicine, biology, mechanics, physics, and chemistry. By 1800, the new machines had brought revolutionary changes to the workplace, transportation and communications, and eventually to the home. Some of these inventions simply made it easier to produce things on a large scale such as textile machines and foundries, which produced large quantities of cloth and metal objects quickly and cheaply. But some inventions brought completely new possibilities such as the first batteries, steamboats, and locomotives. It would take decades for some of these inventions to make a big impact on the world. Yet their creation, and the sheer amount of imagination and risk- taking involved, marked the beginning of a modern, global, technologically based economy of the kind that we live in today.
-                            </p>
+                            <div className="grid gap-4 mt-2">
+                                <Label htmlFor="questionNo">No</Label>
+                                <Input className="w-full" value={questionNo} onChange={(e) => setQuestionNo(e.target.value)} />
+                                <Label htmlFor="type">Type</Label>
+                                <Input className="w-full" value={type} onChange={(e) => setType(e.target.value)} />
+                                <Label htmlFor="title">Title</Label>
+                                <Input className="w-full" value={title} onChange={(e) => setTitle(e.target.value)} />
+                                <Label htmlFor="content">Content</Label>
+                                <Textarea className="w-full" value={content} onChange={(e) => setContent(e.target.value)}/>
+
+                                <Button onClick={() => {
+                                    mutate({
+                                        questionNo: questionNo,
+                                        type:type,
+                                        title:title,
+                                        content:content
+                                    })
+                                    setQuestionNo("")
+                                    setTitle("")
+                                    setType("")
+                                    setContent("")
+                                }
+                                }>
+                                    提交
+                                </Button>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
 
-
+                <div className="mt-2">
+                    {questions.data?.map((question) => (
+                        <Card key={question.id}>
+                            <CardHeader>
+                                <CardTitle>{question.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="leading-7 [&:not(:first-child)]:mt-6">
+                                    {question.content}
+                                </p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
             </main>
         </>
     );
